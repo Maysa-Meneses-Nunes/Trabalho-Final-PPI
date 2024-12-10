@@ -39,7 +39,20 @@ function verificarAutenticacao(req, res, next) {
 app.get('/login.html', (req, res) => {
     res.send(`
         <html>
-            <head><title>Login</title></head>
+        <style>
+        body {
+            display: flex;justify-content: center;align-items: center; height: 100vh;
+            margin: 0;font-family: Arial, sans-serif;background-color: #f4f4f9; }
+        .login-container {
+         background-color: white;padding: 20px;border-radius: 8px;
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);text-align: center;}
+        input {
+             width: 100%;padding: 8px;margin: 10px 0;border-radius: 4px;border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;padding: 8px;background-color: #007bff; color: white;border: none; border-radius: 4px; }
+    </style>
+        <div class="login-container">
             <body>
                 <form method="POST" action="/login.html">
                     <label>Usuário: <input type="text" name="usuario" required></label><br>
@@ -47,6 +60,7 @@ app.get('/login.html', (req, res) => {
                     <button type="submit">Login</button>
                 </form>
             </body>
+            </div>
         </html>
     `);
 });
@@ -74,15 +88,32 @@ app.get('/', verificarAutenticacao, (req, res) => {
     const ultimoAcesso = req.cookies.dataHoraUltimoLogin || 'Primeiro acesso';
     res.send(`
         <html>
-            <head><title>Menu</title></head>
+        <style>
+        body {
+            font-family: Arial, sans-serif;background-color: #f4f4f9;margin: 0; padding: 0;
+            display: flex; justify-content: center;align-items: center; height: 100vh;}
+        .menu-container { background-color: white; padding: 30px;border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);text-align: center;  width: 300px; }
+        h1 {  color: #007bff;margin-bottom: 20px;}
+        p { font-size: 16px;margin-bottom: 20px;color: #555;}
+        ul {list-style-type: none;padding: 0;}
+        li { margin: 15px 0;}
+        a {  text-decoration: none;color: #007bff; font-size: 18px; transition: color 0.3s ease;}
+        a:hover { color: #0056b3; }
+        .logout-link {  color: #ff0000;  }
+        .logout-link:hover {color: #cc0000}
+    </style>
+            <head><title>sala de bate-papo</title></head>
+
             <body>
-                <h1>Bem-vindo, Admin</h1>
+            <div class="menu-container">
+                <h1>Bem-vindo</h1>
                 <p>Último acesso: ${ultimoAcesso}</p>
                 <ul>
                     <li><a href="/usuarios">Gerenciar Usuários</a></li>
                     <li><a href="/batepapo">Bate-Papo</a></li>
                     <li><a href="/logout">Sair</a></li>
-                </ul>
+               </ul>
+                </div>
             </body>
         </html>
     `);
@@ -92,6 +123,20 @@ app.get('/', verificarAutenticacao, (req, res) => {
 app.get('/usuarios', verificarAutenticacao, (req, res) => {
     res.send(`
         <html>
+        <style>
+        body {font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0;
+         display: flex; flex-direction: column;align-items: center;justify-content: center;height: 100vh;}
+        h1, h2 {color: #007bff;}
+        form {background-color: white; padding: 20px; border-radius: 8px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 30px;width: 300px;text-align: center;}
+        label { display: block;margin-bottom: 10px; font-size: 16px;}
+        input {width: 100%; padding: 8px;margin: 5px 0 15px 0;border-radius: 4px;border: 1px solid #ccc; }
+        button {  width: 100%;  padding: 10px; background-color: #007bff; color: white;border: none; border-radius: 4px;cursor: pointer;}
+         button:hover { background-color: #0056b3; }
+        ul {list-style-type: none;padding: 0; width: 300px; margin-top: 20px; text-align: left;}
+        li {background-color: white; margin-bottom: 8px; padding: 8px; border-radius: 4px;  border: 1px solid #ccc;}
+        a {text-decoration: none;color: #007bff;font-size: 16px;margin-top: 20px;}
+        a:hover { color: #0056b3;  }
+    </style>
             <head><title>Cadastro de Usuários</title></head>
             <body>
                 <h1>Cadastro de Usuários</h1>
@@ -124,6 +169,22 @@ app.post('/usuarios', verificarAutenticacao, (req, res) => {
 app.get('/batepapo', verificarAutenticacao, (req, res) => {
     res.send(`
         <html>
+        <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; display: flex;flex-direction: column;align-items: center; justify-content: center; height: 100vh; }
+        h1 { color: #007bff; margin-bottom: 20px;  }
+        form { background-color: white;  padding: 20px;border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 30px;width: 300px;text-align: center; }
+     label {display: block; margin-bottom: 10px;  font-size: 16px; }
+        select, textarea { width: 100%;padding: 8px; margin: 5px 0 15px 0; border-radius: 4px;    border: 1px solid #ccc;  }
+        button {width: 100%;  padding: 10px; background-color: #007bff; color: white;  border: none; border-radius: 4px;  cursor: pointer;}
+       button:hover {
+            background-color: #0056b3; }
+        h2 {  color: #007bff;  }
+        ul {list-style-type: none;padding: 0; width: 300px;  margin-top: 20px;  text-align: left;}
+        li {
+            background-color: white; margin-bottom: 8px;padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+        a {text-decoration: none;color: #007bff;font-size: 16px; margin-top: 20px; }
+        a:hover {color: #0056b3; }
+    </style>
             <head><title>Bate-Papo</title></head>
             <body>
                 <h1>Bate-Papo</h1>
